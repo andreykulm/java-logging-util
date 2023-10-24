@@ -1,0 +1,4 @@
+include:
+  - project: 'takamol/qiwa/infrastructure/ci-cd'
+    file: '/java-lib/.gitlab-ci.yml'
+
