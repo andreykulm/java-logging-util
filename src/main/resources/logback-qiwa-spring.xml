@@ -106,12 +106,12 @@
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <prefix class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
                 <layout class="ch.qos.logback.classic.PatternLayout">
-                    <pattern>Integration logs started</pattern>
+                    <pattern>INTEGRATION-LOGS </pattern>
                 </layout>
             </prefix>
             <suffix class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
                 <layout class="ch.qos.logback.classic.PatternLayout">
-                    <pattern>Integration logs end</pattern>
+                    <pattern> End INTEGRATION-LOGS</pattern>
                 </layout>
             </suffix>
             <providers>
