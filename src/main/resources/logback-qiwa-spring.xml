@@ -1,0 +1,157 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty scope="context" name="service_name" source="spring.application.name"/>
+    <springProperty scope="context" name="team" source="spring.application.team"/>
+    <springProperty scope="context" name="hostname" source="spring.application.hostname"/>
+
+    <!-- Default appender for default logs -->
+    <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <version>
+                    <fieldName>service_version</fieldName>
+                </version>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                    <fieldName>time</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+                <threadName/>
+                <logLevel/>
+                <message/>
+                <provider class="sa.qiwa.logging.loggback.QiwaStackTraceProvider">
+                </provider>
+                <pattern>
+                    <omitEmptyFields>true</omitEmptyFields>
+                    <pattern>
+                        {
+                        "service_name": "${service_name:-}",
+                        "team": "${team:-}",
+                        "hostname": "${hostname:-}",
+                        "trace_id": "%X{traceId:-}",
+                        "span_id": "%X{spanId:-}",
+                        "source": "STDOUT",
+                        "class": "%logger{40}"
+                        }
+                    </pattern>
+                </pattern>
+                <stackTrace>
+                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                        <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                        <maxLength>2048</maxLength>
+                        <shortenedClassNameLength>20</shortenedClassNameLength>
+                        <!-- generated class names -->
+                        <exclude>\$\$FastClassByCGLIB\$\$</exclude>
+                        <exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+                        <exclude>^sun\.reflect\..*\.invoke</exclude>
+                        <!-- JDK internals -->
+                        <exclude>^com\.sun\.</exclude>
+                        <exclude>^sun\.net\.</exclude>
+                        <!-- dynamic invocation -->
+                        <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                        <exclude>^org\.springframework\.cglib\.</exclude>
+                        <exclude>^org\.springframework\.transaction\.</exclude>
+                        <exclude>^org\.springframework\.validation\.</exclude>
+                        <exclude>^org\.springframework\.app\.</exclude>
+                        <exclude>^org\.springframework\.aop\.</exclude>
+                        <exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+                        <rootCauseFirst>true</rootCauseFirst>
+                        <inlineHash>true</inlineHash>
+                    </throwableConverter>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- appender for inbound trafffic / app logs -->
+    <appender name="json_app" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <version>
+                    <fieldName>service_version</fieldName>
+                </version>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                    <fieldName>time</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+                <threadName/>
+                <logLevel/>
+                <loggerName/>
+                <message/>
+                <provider class="sa.qiwa.logging.loggback.QiwaJsonProvider">
+                </provider>
+                <provider class="sa.qiwa.logging.loggback.QiwaStackTraceProvider">
+                </provider>
+                <pattern>
+                    <omitEmptyFields>true</omitEmptyFields>
+                    <pattern>
+                        {
+                        "service_name": "${service_name:-}",
+                        "team": "${team:-}",
+                        "hostname": "${hostname:-}",
+                        "source": "STDOUT",
+                        "stack_trace": "%ex{full}",
+                        "trace_id": "%X{traceId:-}",
+                        "span_id": "%X{spanId:-}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- appender for outbound traffic / integration logs -->
+    <appender name="json_integration" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <prefix class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>Integration logs started</pattern>
+                </layout>
+            </prefix>
+            <suffix class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>Integration logs end</pattern>
+                </layout>
+            </suffix>
+            <providers>
+                <version>
+                    <fieldName>service_version</fieldName>
+                </version>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                    <fieldName>time</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+                <threadName/>
+                <logLevel/>
+                <message/>
+                <loggerName/>
+                <provider class="sa.qiwa.logging.loggback.QiwaIntegrationJsonProvider">
+                </provider>
+                <pattern>
+                    <omitEmptyFields>true</omitEmptyFields>
+                    <pattern>
+                        {
+                        "service_name": "${service_name:-}",
+                        "source": "STDOUT",
+                        "trace_id": "%X{traceId:-}",
+                        "span_id": "%X{spanId:-}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <logger name="json_integration" level="INFO" additivity="false">
+        <appender-ref ref="json_integration"/>
+    </logger>
+    <logger name="json_app" level="INFO" additivity="false">
+        <appender-ref ref="json_app"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="json" />
+    </root>
+</configuration>

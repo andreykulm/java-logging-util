@@ -13,7 +13,7 @@ import java.time.Instant;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
+public class IbmLoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
