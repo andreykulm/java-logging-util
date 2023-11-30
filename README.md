@@ -25,17 +25,42 @@ pom.xml
     <version>2.0.1-SNAPSHOT</version>
 </dependency>
 ...
+
+<repositories>
+    <repository>
+        <id>gitlab-maven-logging-lib</id>
+        <url>https://gitlab.qiwa.tech/api/v4/projects/1295/packages/maven</url>
+    </repository>
+</repositories>
+...
 ```
-settings.xml<br>
+project settings.xml<br>
 ```xml
 ...
     <server>
-        <id>gitlab-maven</id>
+        <id>gitlab-maven-logging-lib</id>
         <configuration>
             <httpHeaders>
                 <property>
                     <name>Job-Token</name>
                     <value>${env.CI_JOB_TOKEN}</value>
+                </property>
+            </httpHeaders>
+        </configuration>
+    </server>
+...
+</servers>
+```
+local settings.xml<br>
+```xml
+...
+    <server>
+        <id>gitlab-maven-logging-lib</id>
+        <configuration>
+            <httpHeaders>
+                <property>
+                    <name>Private-Token</name>
+                    <value>your private token (look gitlab docks how to generate it) </value>
                 </property>
             </httpHeaders>
         </configuration>
