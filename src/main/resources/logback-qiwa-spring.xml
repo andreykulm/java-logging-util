@@ -18,6 +18,7 @@
                 </timestamp>
                 <threadName/>
                 <logLevel/>
+                <loggerName/>
                 <message/>
                 <provider class="sa.qiwa.logging.loggback.QiwaStackTraceProvider">
                 </provider>
