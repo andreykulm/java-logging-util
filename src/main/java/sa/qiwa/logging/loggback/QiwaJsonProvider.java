@@ -28,6 +28,9 @@ public class QiwaJsonProvider extends AbstractJsonProvider<DeferredProcessingAwa
         if (LoggingDataHolder.elapsed.get() != null) {
             generator.writeNumberField("elapsed_ms", LoggingDataHolder.elapsed.get().toMillis());
         }
+        if (LoggingDataHolder.requesterIp.get() != null) {
+            generator.writePOJOField("requester_ip", LoggingDataHolder.requesterIp.get());
+        }
     }
 
 }

@@ -14,6 +14,7 @@ public class LoggingDataHolder {
     public static final ThreadLocal<Instant> started = new ThreadLocal<>();
     public static final ThreadLocal<Instant> finished = new ThreadLocal<>();
     public static final ThreadLocal<Duration> elapsed = new ThreadLocal<>();
+    public static final ThreadLocal<String> requesterIp = new ThreadLocal<>();
 
 
     public static void clear() {
@@ -22,6 +23,7 @@ public class LoggingDataHolder {
         started.remove();
         finished.remove();
         elapsed.remove();
+        requesterIp.remove();
     }
 
 }

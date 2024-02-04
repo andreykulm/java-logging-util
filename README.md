@@ -22,7 +22,7 @@ pom.xml
   <dependency>
     <groupId>sa.qiwa.logging</groupId>
     <artifactId>java-logging-util</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.3-SNAPSHOT</version>
 </dependency>
 ...
 
@@ -329,6 +329,7 @@ var makeSecurePaymentResponseEntity = resultValue._1;
   "service_request": "{\"MakePaymentv2Rq\":{\"Header\":{\"TransactionId\":\"1701109647938\",\"ChannelId\":\"Qiwa\",\"SessionId\":\"212\",\"RequestTime\":\"2023-11-27 12:27:27.938\",\"MWRequestTime\":\"2023-11-27 12:27:27.938\",\"ServiceCode\":\"MP000001\",\"DebugFlag\":0,\"UserInfo\":{\"UserId\":\"1847184\",\"IDNumber\":\"1097473092\"}},\"Body\":{\"ApplicationId\":\"1\",\"BrandType\":\"VISA\",\"ProductId\":1,\"ProviderId\":1,\"Description\":\"something here\",\"Amount\":\"99.99\",\"Currency\":\"SAR\",\"PGPaymentId\":10651,\"Card\":{\"Holder\":\"Jane Jones\",\"Number\":\"4111111111111111\",\"ExpiryMonth\":\"05\",\"ExpiryYear\":\"2034\",\"CVV\":\"123\"},\"ShopperResultUrl\":\"https://dynamic-gateway-api.qiwa.info/10651/checkout\",\"Customer\":{\"IP\":\"127.0.0.3\",\"Browser\":{\"AcceptHeader\":\"text/html\",\"ScreenColorDepth\":\"48\",\"JavaEnabled\":\"false\",\"Language\":\"de\",\"ScreenHeight\":\"1200\",\"ScreenWidth\":\"1600\",\"Timezone\":\"60\",\"ChallengeWindow\":\"4\",\"UserAgent\":\"Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)\"}}}}}",
   "service_response": "{\"MakePaymentv2Rs\":{\"Header\":{\"TransactionId\":\"1701109647938\",\"ChannelId\":\"Qiwa\",\"SessionId\":\"212\",\"RequestTime\":\"2023-11-27 12:27:27.938\",\"MWResponseTime\":\"2023-11-27 18:27:29.415\",\"ServiceCode\":\"MP000001\",\"DebugFlag\":0,\"ResponseStatus\":{\"Status\":\"PENDING\",\"Code\":\"HYPP0031\",\"ArabicMsg\":\"transaction pending\",\"EnglishMsg\":\"transaction pending\"}},\"Body\":{\"HYPPResponse\":{\"id\":\"8ac7a4a08c1052b1018c12094dc43780\",\"paymentType\":\"DB\",\"paymentBrand\":\"VISA\",\"merchantTransactionId\":\"QW-EV-HP-23-392087FED1-000000000046647\",\"result\":{\"code\":\"000.200.000\",\"description\":\"transaction pending\"},\"resultDetails\":{\"clearingInstituteName\":\"SAIB MPGS\"},\"card\":{\"bin\":411111,\"last4Digits\":1111,\"holder\":\"Jane Jones\",\"expiryMonth\":5,\"expiryYear\":2034},\"redirect\":{\"url\":\"https://test.oppwa.com/connectors/asyncresponse;jsessionid=82E1772B8E4AE46FB1B4FFDCC048DF8B.uat01-vm-con03?asyncsource=MPGS&type=authenticate_payer&ndcid=8ac7a4c768cca59e016906f38be45f5e_8a4bab1a6a21424295043898241a10a2\",\"parameters\":{\"Item\":null}},\"customer\":{\"IP\":null,\"Browser\":null},\"risk\":{\"score\":\"100\"},\"buildNumber\":\"3991bdf112fb62e208d5ec70cd98435b5afb1ed0@2023-11-22 00:52:28 +0000\",\"timestamp\":\"2023-11-27 18:27:29+0000\",\"ndc\":\"8ac7a4c768cca59e016906f38be45f5e_8a4bab1a6a21424295043898241a10a2\"},\"PaymentReference\":\"QW-EV-HP-23-392087FED1-000000000046647\",\"PGPaymentId\":\"10651\"}},\"status_code\":0,\"payment_id\":null}",
   "network_status": "OK",
+  "requester_ip": "127.0.0.1",
   "http_code": 201,
   "service_response_status": "PENDING",
   "service_response_code": "HYPP0031",

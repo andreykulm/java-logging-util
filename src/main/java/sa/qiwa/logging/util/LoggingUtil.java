@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -32,6 +33,7 @@ public class LoggingUtil {
 
     public static final Logger appLoger = LoggerFactory.getLogger(APP_LOGGER_NAME);
     public static final String BODY = "body";
+    public static final String X_REAL_IP_HEADER = "x-real-ip";
 
     @SneakyThrows
     public static void logAppExchange(Instant started, CachedLogHttpServletRequest request, CachedLogHttpServletResponse response) {
@@ -58,6 +60,7 @@ public class LoggingUtil {
         LoggingDataHolder.started.set(started);
         LoggingDataHolder.finished.set(end);
         LoggingDataHolder.elapsed.set(Duration.between(started, end));
+        LoggingDataHolder.requesterIp.set(getRequesterIp(request));
         try {
             appLoger.info("App request response logging");
         } finally {
@@ -90,6 +93,7 @@ public class LoggingUtil {
         LoggingDataHolder.started.set(started);
         LoggingDataHolder.finished.set(end);
         LoggingDataHolder.elapsed.set(Duration.between(started, end));
+        LoggingDataHolder.requesterIp.set(getRequesterIp(response));
         try {
             appLoger.info("Outbound request response logging");
         } finally {
@@ -122,13 +126,13 @@ public class LoggingUtil {
         LoggingDataHolder.started.set(started);
         LoggingDataHolder.finished.set(end);
         LoggingDataHolder.elapsed.set(Duration.between(started, end));
+        LoggingDataHolder.requesterIp.set(getRequesterIp(response));
         try {
             appLoger.info("Outbound request response logging");
         } finally {
             LoggingDataHolder.clear();
         }
     }
-
 
     private static Map<String, String> getHeaders(HttpServletRequest request) {
         Map<String, String> headers = new HashMap<>();
@@ -164,7 +168,6 @@ public class LoggingUtil {
         return headers;
     }
 
-
     private static String requestUrl(HttpServletRequest request) {
         StringBuffer url = request.getRequestURL();
         String query = request.getQueryString();
@@ -172,5 +175,19 @@ public class LoggingUtil {
             url.append('?').append(query);
         }
         return url.toString();
+    }
+
+    private static String getRequesterIp(HttpServletRequest request) {
+        String requesterIp = getHeaders(request).get(X_REAL_IP_HEADER);
+        if (requesterIp == null || requesterIp.isEmpty()) {
+            requesterIp = request.getRemoteAddr();
+        }
+        return requesterIp;
+    }
+
+    private static String getRequesterIp(ClientHttpResponse response) {
+        return Objects.requireNonNull(response.getHeaders().get(X_REAL_IP_HEADER)).stream()
+                .findFirst()
+                .get();
     }
 }
