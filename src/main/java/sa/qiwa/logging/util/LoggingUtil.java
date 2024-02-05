@@ -23,7 +23,6 @@ import java.time.Instant;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -93,7 +92,7 @@ public class LoggingUtil {
         LoggingDataHolder.started.set(started);
         LoggingDataHolder.finished.set(end);
         LoggingDataHolder.elapsed.set(Duration.between(started, end));
-        LoggingDataHolder.requesterIp.set(getRequesterIp(response));
+        LoggingDataHolder.requesterIp.set(getRequesterIp(request));
         try {
             appLoger.info("Outbound request response logging");
         } finally {
@@ -126,7 +125,7 @@ public class LoggingUtil {
         LoggingDataHolder.started.set(started);
         LoggingDataHolder.finished.set(end);
         LoggingDataHolder.elapsed.set(Duration.between(started, end));
-        LoggingDataHolder.requesterIp.set(getRequesterIp(response));
+        LoggingDataHolder.requesterIp.set(getRequesterIp(request));
         try {
             appLoger.info("Outbound request response logging");
         } finally {
@@ -185,9 +184,9 @@ public class LoggingUtil {
         return requesterIp;
     }
 
-    private static String getRequesterIp(ClientHttpResponse response) {
-        return Objects.requireNonNull(response.getHeaders().get(X_REAL_IP_HEADER)).stream()
-                .findFirst()
-                .get();
+    private static String getRequesterIp(HttpRequest request) {
+        return Optional.ofNullable(request.getHeaders().get(X_REAL_IP_HEADER))
+                .map(list -> list.stream().findFirst().orElse(null))
+                .orElse(null);
     }
 }
